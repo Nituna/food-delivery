@@ -1,0 +1,67 @@
+#include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+// Define a structure for the food orders typedef struct Order {
+int orderID;
+char customerName[50];
+ char foodItem[50];
+ struct Order* next;
+} Order;
+// Head and tail pointers for the queue Order* head = NULL;
+Order* tail = NULL;
+// Function to enqueue an order
+   void enqueueOrder(int id, char name[], char food[]) { 
+   Order* newOrder = (Order*)malloc(sizeof(Order)); 
+newOrder->orderID = id;
+strcpy(newOrder->customerName, name);
+ strcpy(newOrder->foodItem, food);
+ newOrder->next = NULL;
+if (tail == NULL) {
+head = tail = newOrder;
+}else{
+tail->next = newOrder; tail = newOrder;
+}
+printf("Order %d added successfully!\n", id);
+}
+// Function to dequeue an order void dequeueOrder() {
+if (head == NULL) {
+printf("No orders to process.\n"); return;
+}
+Order* temp = head;
+
+printf("Processing Order %d for %s (%s)\n", temp->orderID, temp->customerName, temp->foodItem); 
+head = head->next;
+if (head == NULL) { tail = NULL;
+}
+free(temp);
+}
+// Function to display all orders in the queue void displayOrders() {
+if (head == NULL) {
+printf("No orders in the queue.\n"); return;
+}
+Order* temp = head; printf("Current Orders:\n"); while (temp != NULL) {
+printf("Order ID: %d, Customer: %s, Food Item: %s\n", temp->orderID, temp->customerName, temp
+>foodItem);
+temp = temp->next;
+}
+}
+// Main function int main() {
+int choice, id;
+char name[50], food[50]; while (1) {
+printf("\n--- Food Delivery System ---\n"); printf("1. Add Order\n");
+printf("2. Process Order\n"); printf("3. Display Orders\n"); printf("4. Exit\n"); printf("Enter your choice: "); scanf("%d", &choice);
+    switch (choice) { case 1:
+printf("Enter Order ID: "); scanf("%d", &id);
+printf("Enter Customer Name: "); scanf(" %[^\n]", name);
+printf("Enter Food Item: "); scanf(" %[^\n]", food); enqueueOrder(id, name, food); break;
+case 2:
+dequeueOrder(); break;
+case 3:
+displayOrders(); break;
+case 4:
+exit(0); break;
+default:
+printf("Invalid choice! Try again.\n");
+}
+}
+return0;
